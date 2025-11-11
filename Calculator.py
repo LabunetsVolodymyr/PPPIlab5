@@ -54,29 +54,75 @@ class CalculatorGUI:
         щоб мати можливість надсилати йому події (натискання кнопок).
         """
         self.controller = controller
-        pass
+        self.root = root
+        self.root.title("Калькулятор")
+        self.root.geometry("300x470") # Задамо фіксований розмір
+        self.root.resizable(False, False)
+        
+        # Спеціальна змінна tkinter для відстеження тексту на екрані
+        self.display_var = tk.StringVar()
+        
+        self.setup_ui()
+        self.update_display("0") # Початкове значення
 
     def setup_ui(self):
         """
         Створює всі необхідні віджети (екран, кнопки)
         і розміщує їх у вікні.
         """
-        pass
+        # Створення екрану (Entry widget)
+        display_font = ('Arial', 24)
+        display = tk.Entry(self.root, 
+                             textvariable=self.display_var, 
+                             font=display_font, 
+                             bd=10, 
+                             insertwidth=2, 
+                             width=14, 
+                             justify='right',
+                             state='readonly') # 'readonly' - не можна писати з клавіатури
+        display.pack(pady=10)
+
+        # Створення контейнера (Frame) для кнопок
+        button_frame = tk.Frame(self.root)
+        button_frame.pack()
+
+        # Визначення кнопок (рядок за рядком)
+        buttons = [
+            ('7', '8', '9', '/'),
+            ('4', '5', '6', '*'),
+            ('1', '2', '3', '-'),
+            ('C', '0', '=', '+'),
+            ('(', ')', '←', '.') # Додамо ще кнопок
+        ]
+        # Створення кнопок у циклі
+        button_font = ('Arial', 18)
+        for i, row in enumerate(buttons):
+            for j, value in enumerate(row):
+                # 'lambda' потрібна, щоб кожна кнопка "запам'ятала" своє значення 'value'
+                cmd = lambda v=value: self._on_button_click(v)
+                
+                button = tk.Button(button_frame, 
+                                   text=value, 
+                                   font=button_font, 
+                                   width=4, 
+                                   height=2,
+                                   command=cmd)
+                button.grid(row=i, column=j, padx=2, pady=2)
 
     def _on_button_click(self, value):
         """
         Приватний метод, який викликається при натисканні будь-якої кнопки GUI.
         Він просто передає значення кнопки контролеру.
         """
-        pass
+        self.controller.handle_button_press(value)
 
     def update_display(self, text):
         """
         Публічний метод, який контролер може викликати,
         щоб оновити текст на екрані калькулятора.
         """
-        pass
-
+        self.display_var.set(text)
+        
 # ----------------------------------------------------------------------
 # ЧАСТИНА 3: ЛОГІКА ПРОГРАМИ (КОНТРОЛЕР) - за це відповідає Влад
 # ----------------------------------------------------------------------
