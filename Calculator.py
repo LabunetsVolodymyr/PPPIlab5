@@ -9,35 +9,53 @@ class Calculator:
     Відповідає виключно за математичну логіку.
     Не має жодного уявлення про графічний інтерфейс.
     """
-    def init(self):
+    def __init__(self):
         """Ініціалізує стан калькулятора."""
-        pass
+        self.current_expression = ""
 
     def process_input(self, value):
         """
         Обробляє одне натискання кнопки (наприклад, '5', '+', 'C', '=').
         Це головний метод, який викликає контролер.
         """
-        pass
+        if value == 'C':
+            self.clear()
+        elif value == '=':
+            self._calculate()
+        elif value == '←': # Додамо кнопку "стерти" для зручності
+             self.current_expression = self.current_expression[:-1]
+        else:
+            # Просто додаємо символ до рядка
+            self.current_expression += str(value)
 
     def _calculate(self):
         """
         Приватний метод для виконання фактичного обчислення
         виразу, що зберігається.
         """
-        pass
+        try:
+            # eval() - це небезпечна функція для реальних програм (через
+            # вразливості), але для простого калькулятора вона ідеальна.
+            result = str(eval(self.current_expression))
+            self.current_expression = result
+        except ZeroDivisionError:
+            self.current_expression = "Помилка (діл. 0)"
+        except Exception:
+            self.current_expression = "Помилка (вираз)"
+
 
     def clear(self):
         """
         Скидає поточний стан калькулятора.
         """
-        pass
+        self.current_expression = ""
 
     def get_display_value(self):
         """
         Повертає поточне значення, яке має відображатися на екрані.
+        Якщо рядок порожній, показуємо "0".
         """
-        pass
+        return self.current_expression or "0"
 
 # ----------------------------------------------------------------------
 # ЧАСТИНА 2: ГРАФІЧНИЙ ІНТЕРФЕЙС (ВИГЛЯД) - за це відповідає Саша
@@ -48,7 +66,7 @@ class CalculatorGUI:
     Відповідає виключно за створення та розміщення віджетів.
     Нічого не знає про те, як виконувати обчислення.
     """
-    def init(self, root, controller):
+    def __init__(self, root, controller):
         """
         Налаштовує головне вікно та зберігає посилання на контролер,
         щоб мати можливість надсилати йому події (натискання кнопок).
@@ -86,34 +104,34 @@ class CalculatorApp:
     З'єднує Логіку (Calculator) та GUI (CalculatorGUI).
     Керує потоком даних між ними.
     """
-    def init(self, root):
+    def __init__(self, root):
         """
         Ініціалізує Модель (логіку) та Вигляд (GUI)
         і пов'язує їх.
         """
         self.model = Calculator()
+        # Передаємо 'self' (тобто цей екземпляр CalculatorApp) як контролер
         self.view = CalculatorGUI(root, self)
-        pass
 
     def handle_button_press(self, value):
         """
         Цей метод викликається з GUI, коли користувач натискає кнопку.
         """
         # 1. Надіслати ввід користувача в модель
-        pass
+        self.model.process_input(value)
 
         # 2. Отримати оновлене значення з моделі
-        pass
+        display_text = self.model.get_display_value()
 
         # 3. Надіслати нове значення для відображення у GUI
-        pass
+        self.view.update_display(display_text)
 
 
 # ----------------------------------------------------------------------
 # ТОЧКА ВХОДУ
 # ----------------------------------------------------------------------
 
-if name == "main":
+if __name__ == "__main__":
     # Створюємо головне вікно
     main_window = tk.Tk()
 
