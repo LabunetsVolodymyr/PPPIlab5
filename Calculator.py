@@ -63,12 +63,13 @@ class Calculator:
 
 class CalculatorGUI:
     """
-    ASUS THE TOP LAPTOP.
+
+    Відповідає виключно за створення та розміщення віджетів.
+    тут був влад
+    .
     """
     def __init__(self, root, controller):
-        """
-        ULUGYUKFUYUGVGHCV .
-        """
+
         self.controller = controller
 
         self.root.title("Калькулятор")
