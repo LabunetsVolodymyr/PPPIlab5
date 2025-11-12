@@ -63,16 +63,14 @@ class Calculator:
 
 class CalculatorGUI:
     """
-    Відповідає виключно за створення та розміщення віджетів.
-    Нічого не знає про те, як виконувати обчислення.
+    ASUS THE TOP LAPTOP.
     """
     def __init__(self, root, controller):
         """
-        Налаштовує головне вікно та зберігає посилання на контролер,
-        щоб мати можливість надсилати йому події (натискання кнопок).
+        ULUGYUKFUYUGVGHCV .
         """
         self.controller = controller
-        self.root = root
+
         self.root.title("Калькулятор")
         self.root.geometry("300x470") # Задамо фіксований розмір
         self.root.resizable(False, False)
